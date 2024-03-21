@@ -1,37 +1,21 @@
 #!/bin/bash
 
-# Bed brugeren om at indtaste to tal og den ønskede operation
-echo "Indtast det første tal:"
-read tal1
-echo "Indtast det andet tal:"
-read tal2
-echo "Vælg operation (+, -, *, /):"
-read operation
+# Tjek om et filnavn er givet som argument
+if [ "$#" -ne 1 ]; then
+    echo "Brug: $0 filnavn"
+    exit 1
+fi
 
-# Udfør den valgte operation
-case $operation in
-    +)
-        resultat=$(echo "$tal1 + $tal2" | bc)
-        ;;
-    -)
-        resultat=$(echo "$tal1 - $tal2" | bc)
-        ;;
-    \*)
-        resultat=$(echo "$tal1 * $tal2" | bc)
-        ;;
-    /)
-        # Kontrollerer for division med nul
-        if [ "$tal2" -eq 0 ]; then
-            echo "Fejl: Division med nul er ikke tilladt."
-            exit 1
-        fi
-        resultat=$(echo "scale=2; $tal1 / $tal2" | bc)
-        ;;
-    *)
-        echo "Ugyldig operation."
-        exit 1
-        ;;
-esac
+filnavn=$1
 
-# Vis resultatet
-echo "Resultat: $resultat"
+# Tjek om filen eksisterer
+if [ ! -f "$filnavn" ]; then
+    echo "Filen '$filnavn' findes ikke."
+    exit 1
+fi
+
+# Læs filen linje for linje
+while IFS= read -r linje
+do
+    echo "$linje"
+done < "$filnavn"
