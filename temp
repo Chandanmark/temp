@@ -1,10 +1,17 @@
 #!/bin/bash
 
-echo "Indtast en liste af ord, adskilt af mellemrum:"
-read -a ordliste # Læser en linje med input ind i et array
+# Bed brugeren om at indtaste 'ja' eller 'nej'
+echo "Indtast 'ja' eller 'nej':"
+read svar
 
-# Udskriver elementerne i arrayet, adskilt af newline, og sender dem til 'sort'
-for ord in "${ordliste[@]}"; do
-    echo "$ord"
-done | sort
+# Normaliser svaret til lowercase for at gøre tjekket case-insensitive
+svar=$(echo "$svar" | tr '[:upper:]' '[:lower:]')
 
+# Afgør hvilken besked der skal vises baseret på brugerens svar
+if [ "$svar" == "ja" ]; then
+    echo "Du svarede ja."
+elif [ "$svar" == "nej" ]; then
+    echo "Du svarede nej."
+else
+    echo "Ugyldigt svar. Venligst indtast 'ja' eller 'nej'."
+fi
