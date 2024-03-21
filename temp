@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Tjek om der er givet præcis to argumenter
+if [ "$#" -ne 2 ]; then
+    echo "Brug: $0 kildesti destinationssti"
+    exit 1
+fi
+
+# Definer kilde- og destinationsstier fra argumenterne
+kildesti=$1
+destinationssti=$2
+
+# Tjek om kildestien eksisterer
+if [ ! -d "$kildesti" ]; then
+    echo "Kildestien findes ikke."
+    exit 1
+fi
+
+# Opret destinationsstien, hvis den ikke eksisterer
+mkdir -p "$destinationssti"
+
+# Hent det nuværende tidsstempel
+tidsstempel=$(date +"%Y%m%d%H%M%S")
+
+# Kopier hver fil fra kildestien til destinationsstien
+for fil in "$kildesti"/*; do
+    if [ -f "$fil" ]; then # Tjek om det er en fil og ikke en mappe
+        filnavn=$(basename "$fil")
+        # Kopier filen
+        cp "$fil" "$destinationssti/$filnavn"
+        # Opret en sikkerhedskopi med tidsstempel
+        cp "$fil" "$destinationssti/${filnavn}_backup_${tidsstempel}"
+    fi
+done
+
+echo "Filer er kopieret og sikkerhedskopieret."
