@@ -1,17 +1,10 @@
 #!/bin/bash
 
-# Bed brugeren om at indtaste et tal
-echo -n "Indtast et tal: "
-read tal
+echo "Indtast en liste af ord, adskilt af mellemrum:"
+read -a ordliste # Læser en linje med input ind i et array
 
-# Kontroller, at inputtet er et tal
-if ! [[ "$tal" =~ ^[0-9]+$ ]]; then
-    echo "Fejl: Du skal indtaste et positivt heltal."
-    exit 1
-fi
+# Udskriver elementerne i arrayet, adskilt af newline, og sender dem til 'sort'
+for ord in "${ordliste[@]}"; do
+    echo "$ord"
+done | sort
 
-# Brug en for-løkke til at tælle fra 1 til det indtastede tal
-for (( i=1; i<=tal; i++ ))
-do
-    echo $i
-done
